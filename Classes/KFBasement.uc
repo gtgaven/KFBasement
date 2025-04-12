@@ -19,14 +19,15 @@ auto state Loop
 {
     function BroadcastMessage()
     {
-        local string Message = "Get in the zone or get kicked. I don't make the rules..";
+        local string announcment
         local PlayerController PC;
 
         if( (WorldInfo != none) && Role == ROLE_Authority )
         {
             foreach WorldInfo.AllControllers(class'PlayerController', PC)
             {
-                if( PC.bIsPlayer ) WorldInfo.Game.Broadcast(PC, Message);
+		announcment = "Get in the zone or get kicked. I don't make the rules..";
+                if( PC.bIsPlayer ) WorldInfo.Game.Broadcast(PC, announcment);
             }
 
         }
