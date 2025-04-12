@@ -24,23 +24,28 @@ function UpdateIni()
 
 auto state Loop
 {
-    function BroadcastMessage()
+    function BroadcastMessagIfObjectiveMode()
     {
         local string announcment;
         local PlayerController PC;
+        local KFGameReplicationInfo GRI;
 
-        if( (WorldInfo != none) && Role == ROLE_Authority )
+        if( (WorldInfo != none) && Role == ROLE_Authority)
         {
-            foreach WorldInfo.AllControllers(class'PlayerController', PC)
-            {
-                announcment = "Get in the zone or get kicked. I don't make the rules..";
-                if( PC.bIsPlayer ) WorldInfo.Game.Broadcast(PC, announcment);
+            GRI = KFGameReplicationInfo(WorldInfo.GRI);
+            if (GRI.bObjectiveMode){
+                foreach WorldInfo.AllControllers(class'PlayerController', PC)
+                {
+                    announcment = "Get in the zone or get kicked. I don't make the rules..";
+                    if( PC.bIsPlayer ) WorldInfo.Game.Broadcast(PC, announcment);
+                }
             }
+            
         }
     }
 
 Begin:
-    BroadcastMessage();
+    BroadcastMessagIfObjectiveMode();
     Sleep(TimeBetweenMessages);
     goto 'Begin';
     stop;
