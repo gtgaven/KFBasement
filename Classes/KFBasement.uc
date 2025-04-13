@@ -9,7 +9,7 @@ function PostBeginPlay()
 {
     if( Role == ROLE_Authority )
     {
-        LogInternal("Loading the basement....");
+        LogInternal("\n\n\n\nLoading the basement....");
         LogInternal(TimeStamp());
         LogInternal("TimeBetweenMessages:"@TimeBetweenMessages);
         LogInternal("DONE!");
@@ -25,7 +25,6 @@ function UpdateIniIfNoExist()
         IniVersion = 1;
         SaveConfig();
     }
-
 }
 
 auto state Loop
@@ -42,11 +41,10 @@ auto state Loop
             if (GRI.bTraderIsOpen){
                 foreach WorldInfo.AllControllers(class'PlayerController', PC)
                 {
-                    announcment = "Get in the zone or get kicked. I don't make the rules..";
+                    announcment = "Play the objective zones or get kicked. I don't make the rules..";
                     if( PC.bIsPlayer ) WorldInfo.Game.Broadcast(PC, announcment);
                 }
             }
-            
         }
     }
 
