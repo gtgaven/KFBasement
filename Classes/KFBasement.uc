@@ -3,6 +3,7 @@ class KFBasement extends Actor
 
 
 var config float TimeBetweenMessages;
+var config int IniVersion;
 
 function PostBeginPlay()
 {
@@ -12,14 +13,19 @@ function PostBeginPlay()
         LogInternal(TimeStamp());
         LogInternal("TimeBetweenMessages:"@TimeBetweenMessages);
         LogInternal("DONE!");
-        UpdateIni();
+        UpdateIniIfNoExist();
     }
 }
 
-function UpdateIni()
+function UpdateIniIfNoExist()
 {
-    TimeBetweenMessages = 12.f;
-    SaveConfig();
+    if (IniVersion == 0)
+    {
+        TimeBetweenMessages = 45.f;
+        IniVersion = 1;
+        SaveConfig();
+    }
+
 }
 
 auto state Loop
@@ -33,7 +39,7 @@ auto state Loop
         if( (WorldInfo != none) && Role == ROLE_Authority)
         {
             GRI = KFGameReplicationInfo(WorldInfo.GRI);
-            if (GRI.bObjectiveMode){
+            if (GRI.bTraderIsOpen){
                 foreach WorldInfo.AllControllers(class'PlayerController', PC)
                 {
                     announcment = "Get in the zone or get kicked. I don't make the rules..";
